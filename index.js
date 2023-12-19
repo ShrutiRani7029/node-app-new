@@ -1,58 +1,79 @@
 
-const http = require('http');
+//const http = require('http');
 const fs=require('fs')
 
+
 const index=fs.readFileSync('index.html','utf-8')
-//const data = fs.readFileSync('data.json','utf-8');
-
 const data = JSON.parse(fs.readFileSync('data.json','utf-8'));
-const pro = data.products[0];
+const pro = data.products;
 
 
-const server = http.createServer((req,res)=>{
-
-    console.log(req.url, req.method)
-    ///request me data le skte hai response me data bhej skte hai
+///lets start express ///
 
 
-    ///DYNAMIC HTML
+//ye hai server ka start -----
+//start
+const express=require('express')
 
-     switch(req.url){
-        case '/':
-            res.setHeader('Content-Type', 'text/html');
-            res.end(index);
-            break;
-        case '/api':
-            res.setHeader('Content-Type', 'application/json');
-            res.end(JSON.stringify(data));
-            break;
-
-        case '/pro':
-            res.setHeader('Content-Type', 'text/html');
-            let mindex=index.replace('shruti',pro.name).replace('Hello',pro.id);
-            res.end(mindex);
-            break;
-        default:
-            res.writeHead(404,'NOT FOUND');
-          
-     }
+//nya server
+const server = express()
+//start
+//ab hm apis or paths bnaenge
+//body code
 
 
-    ///DYNAMIC HTML
+//middleware
+
+/*server.use((req,res,next)=>{
+    console.log(req.method, req.ip, req.hostname, req.get('User-Agent'), new Date());
+    next();
+
+})
+*/
+
+const auth =(req,res,next)=>{
+    console.log(req.query);
+    if(req.query.password=='20'){next()}
+    else{
+        res.sendStatus(401);
+    }
+}
+server.use(auth);
 
 
-    console.log('server started')
-    //header me header ka naam aur uski value hoti hai setheader header set krega aur res.end use bhej dega
-    //res.setHeader('dummy', 'dummyvalue')
-    //res end ... response ko bhej deti hai
-    //res.end('<h1>hillo</h1>')
-    //res.setHeader('Content-Type', 'application/json')
-    //res.setHeader('Content-Type', 'text/html')
-    //content type application json aa jaegi
-    //res.end(JSON.stringify(data));
-    //res.end(data)
-    //res.end(index)
+//middleware
+
+
+//API - Endpoint - Route
+server.get('/',(req,res)=>{
+    res.json({type:'GET'})
+})
+server.post('/',(req,res)=>{
+    res.json({type:'POST'})
+})
+server.put('/',(req,res)=>{
+    res.json({type:'PUT'})
+})
+server.delete('/',(req,res)=>{
+    res.json({type:'DELETE'})
+})
+//inn sbhi ka path (/) same hi hai means, ek hi path pr alag alag method ho skte hai
+
+
+server.get('/',(req,res)=>{
+    //res.send('hey')
+   // res.sendFile('https://images.unsplash.com/photo-1702651598372-f8e777dabe6c?q=80&w=1944&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')
+   //res.json(pro);
+   //res.sendStatus(404);
+   //res.status(201).send('hello');
 })
 
-///ab listen server ko port se bind krdega
-server.listen(8080)
+
+//body code
+//ye hai server ka end
+//end
+server.listen(8080,()=>{
+    console.log('server started');
+})
+//end
+
