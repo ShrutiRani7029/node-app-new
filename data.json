@@ -1,0 +1,25 @@
+{
+    "user": {
+      "id": 123,
+      "name": "John Doe",
+      "email": "john.doe@example.com"
+    },
+    "products": [
+      {
+        "id": 1,
+        "name": "Fake Product 1",
+        "price": 19.99
+      },
+      {
+        "id": 2,
+        "name": "Fake Product 2",
+        "price": 29.99
+      }
+    ],
+    "isPremium": false,
+    "metadata": {
+      "created_at": "2023-01-01T12:00:00",
+      "version": "1.0"
+    }
+  }
+  
